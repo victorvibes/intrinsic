@@ -3,9 +3,7 @@
 - Responsive UI.
 - Custom settings dropdown.
 - Testing.
-- Set up GitHub Actions to build and upload installers for macOS (DMG), Windows
-  (EXE/MSI), Linux (AppImage/DEB/RPM) and Docker without needing Node.js and
-  Git.
+- Avoid node.js, git, npm requirements. Zip releases.
 - Allow different score formulas.
 - Support insurance companies and banks.
 - Improve cleaner readability and logic.

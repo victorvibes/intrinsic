@@ -14,7 +14,7 @@ const stripV = (tag) => (typeof tag === 'string' ? tag.replace(/^v/, '') : tag);
 
 function resolveNodeBin() {
 	if (process.env.npm_node_execpath) return process.env.npm_node_execpath;
-	return process.platform === 'win32' ? 'node.exe' : 'node';
+	return process.execPath;
 }
 
 function fetchJson(url) {
@@ -100,24 +100,27 @@ export async function updateVersion() {
 	const ref = await getLatestRef();
 	const { workRoot, updaterPath } = copyUpdaterToTemp();
 
-	const nodeBin = resolveNodeBin();
-	const args = [
-		updaterPath,
-		'--owner',
-		OWNER,
-		'--repo',
-		REPO,
-		'--ref',
-		ref,
-		'--appName',
-		APP_NAME,
-	];
-
-	const child = spawn(nodeBin, args, {
-		detached: true,
-		stdio: 'ignore',
-		shell: process.platform === 'win32',
-	});
+	const child = spawn(
+		resolveNodeBin(),
+		[
+			updaterPath,
+			'--owner',
+			OWNER,
+			'--repo',
+			REPO,
+			'--ref',
+			ref,
+			'--appName',
+			APP_NAME,
+		],
+		{
+			env: { ...process.env, ELECTRON_RUN_AS_NODE: '1' },
+			detached: true,
+			stdio: 'ignore',
+			shell: false,
+			windowsHide: true,
+		}
+	);
 	child.unref();
 
 	setTimeout(() => {
