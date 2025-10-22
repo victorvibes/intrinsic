@@ -322,6 +322,8 @@ export class SettingsDialog extends LitElement {
 			)
 		);
 
+		console.log('debug: starting update process');
+
 		try {
 			// Race backend call with timeout
 			const result = await Promise.race([
