@@ -127,7 +127,7 @@ export async function updateVersion() {
 		try {
 			app.quit();
 		} catch {}
-	}, 300);
+	}, 1000);
 
 	setTimeout(() => {
 		try {

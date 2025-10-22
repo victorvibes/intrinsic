@@ -14,19 +14,49 @@ function parseArgs(argv) {
 	return out;
 }
 
+function envWithBetterPath() {
+	const extra =
+		process.platform === 'darwin'
+			? ['/opt/homebrew/bin', '/usr/local/bin', '/usr/bin', '/bin']
+			: process.platform === 'linux'
+			? ['/usr/local/bin', '/usr/bin', '/bin']
+			: [];
+	const sep = process.platform === 'win32' ? ';' : ':';
+	const cur = process.env.PATH || '';
+	const add = extra.filter((p) => !cur.split(sep).includes(p));
+	return { ...process.env, PATH: [cur, ...add].filter(Boolean).join(sep) };
+}
+
 function run(cmd, args, cwd) {
+	if (process.platform !== 'win32') {
+		const quoted = [cmd, ...args]
+			.map((a) => `'${String(a).replace(/'/g, `'\\''`)}'`)
+			.join(' ');
+		return new Promise((resolve, reject) => {
+			const child = spawn('bash', ['-lc', quoted], {
+				cwd,
+				stdio: 'inherit',
+				env: envWithBetterPath(),
+			});
+			child.on('error', reject);
+			child.on('close', (c) =>
+				c === 0 ? resolve() : reject(new Error(`${quoted} exited ${c}`))
+			);
+		});
+	}
 	return new Promise((resolve, reject) => {
-		const exe = process.platform === 'win32' && cmd === 'npm' ? 'npm.cmd' : cmd;
+		const exe = cmd === 'npm' ? 'npm.cmd' : cmd;
 		const child = spawn(exe, args, {
 			cwd,
 			stdio: 'inherit',
-			shell: process.platform === 'win32',
+			shell: false,
+			env: envWithBetterPath(),
 		});
 		child.on('error', reject);
-		child.on('close', (code) =>
-			code === 0
+		child.on('close', (c) =>
+			c === 0
 				? resolve()
-				: reject(new Error(`${cmd} ${args.join(' ')} exited ${code}`))
+				: reject(new Error(`${exe} ${args.join(' ')} exited ${c}`))
 		);
 	});
 }
