@@ -23,11 +23,11 @@
 		"pdfjs-dist": "^5.4.54"
 	},
 	"devDependencies": {
+		"@electron/packager": "^19.0.1",
 		"@electron/rebuild": "^4.0.1",
 		"concurrently": "^9.2.0",
 		"cross-env": "^10.0.0",
 		"electron": "^37.3.0",
-		"electron-packager": "^17.1.2",
 		"png2icons": "^2.0.1",
 		"sharp": "^0.34.4",
 		"vite": "^7.1.3"
