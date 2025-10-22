@@ -428,7 +428,7 @@ export class SettingsDialog extends LitElement {
 									<p>
 										${t.vNeedsUpdate}
 										${this.remoteVersion
-											? html`(<b>${this.remoteVersion}</b>)`
+											? html`(<span>${this.remoteVersion}</span>)`
 											: ''}
 									</p>
 									<div class="horizontal-box">
