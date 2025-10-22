@@ -286,7 +286,16 @@ export function cleanChunk(target, chunk, period) {
 			// Check for currency symbols
 			const result = checkCurrencyMillionsOrUds(line, curr);
 			if (result.found) {
-				// Check if we're dealing with "Uds."
+				const beforeNeedsSpace =
+					curr > 0 &&
+					!/\s/.test(line[curr - 1]) &&
+					processedLine.slice(-1) !== ' ';
+				const afterNeedsSpace =
+					curr + result.length < line.length &&
+					!/\s/.test(line[curr + result.length]);
+
+				if (beforeNeedsSpace) processedLine += ' ';
+
 				if (result.type === 'units') {
 					processedLine += 'units';
 				} else if (result.type === 'millions') {
@@ -294,7 +303,11 @@ export function cleanChunk(target, chunk, period) {
 				} else if (result.type === 'thousands') {
 					processedLine += 'in thousands';
 				}
+
+				if (afterNeedsSpace) processedLine += ' ';
+
 				curr += result.length;
+				continue;
 			} else {
 				// Check for integers surrounded by parentheses
 				if (line[curr] === '(' && curr + 1 < line.length) {

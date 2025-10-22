@@ -100,6 +100,8 @@ export class Ticker extends LitElement {
 				text-align: center;
 				gap: 30px;
 				justify-content: center;
+				font-variant-numeric: tabular-nums;
+				font-feature-settings: 'tnum' 1;
 			}
 
 			h1 {
@@ -171,6 +173,20 @@ export class Ticker extends LitElement {
 			.row-left-aligned {
 				justify-content: left;
 				gap: 12px;
+			}
+
+			.row p:last-child {
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				text-align: right;
+			}
+
+			/* reserve fixed space for the % change so it never shifts layout */
+			.row p:last-child sub {
+				display: inline-block;
+				width: 6ch; /* fits like “-123.4%” */
+				text-align: right;
 			}
 
 			/* odd count -> single column */
@@ -494,7 +510,7 @@ export class Ticker extends LitElement {
 		const val = data[field];
 		const changeKey = field + '_change';
 		const change = data[changeKey];
-		let changeHTML = '';
+		let changeHTML = html`<sub class="gray-text">&nbsp;</sub>`;
 
 		if (change) {
 			const changeFormatted = new Intl.NumberFormat(locale, {
@@ -739,13 +755,13 @@ export class Ticker extends LitElement {
 									}
 
 									const digitsOnly = v.replace(/\D/g, '');
-									if (digitsOnly.length > 4) {
+									if (digitsOnly.length > 5) {
 										let count = 0;
 										v = v
 											.split('')
 											.filter((ch) => {
 												if (/\d/.test(ch)) {
-													if (count < 4) {
+													if (count < 5) {
 														count++;
 														return true;
 													}
