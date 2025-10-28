@@ -9,9 +9,12 @@
 - Allow different score formulas.
 - Support insurance companies and banks.
 - Improve cleaner readability and logic.
+- Performance and memory optimizations (renderer and backend).
 - Keyboard navigation.
 - Charts and sankey visualization.
-- RAG chat within rendered doc / parsed text / JSON data.
+- Note-taking within ticker view.
+- RAG chat within ticker view (JSON data).
+- RAG chat with doc / parsed text.
 - Parse CSR URLs.
 - Mark/unmark tickers currently on portfolio -> filter/search through dialog.
 - Web-search for portfolio tickers latest news.
