@@ -1,7 +1,7 @@
 {
 	"name": "intrinsic",
 	"productName": "intrinsic",
-	"version": "1.3.0",
+	"version": "1.3.1",
 	"main": "src/main/main.js",
 	"bin": {
 		"intrinsic": "scripts/cli.js"
