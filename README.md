@@ -160,9 +160,9 @@ the required net income.
 - **TL**: Total Liabilities.
 - **E**: Shareholders' Equity.
 - **WC**: Working Capital, current assets minus current liabilities.
-- **WC / NCL**: Working Capital divided by non-current liabilities.
-- **Shares<sub>≈</sub>**: approximate shares. Given the inconsistency in
-  financial file formats and different accounting practices, an approximation is
+- **WC<sub>NCL</sub>**: Working Capital divided by non-current liabilities.
+- **Shs<sub>≈</sub>**: approximate shares. Given the inconsistency in financial
+  file formats and different accounting practices, an approximation is
   calculated using net profit and EPS.
 - **BV**: Book Value, shareholders' equity divided by shares.
 - **R**: Revenue.
