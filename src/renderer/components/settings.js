@@ -32,6 +32,8 @@ export class SettingsDialog extends LitElement {
 		remoteVersion: { type: String },
 		updating: { type: Boolean },
 		updateErr: { type: Boolean },
+		_providerOpen: { type: Boolean },
+		_modelOpen: { type: Boolean },
 	};
 
 	constructor() {
@@ -53,6 +55,8 @@ export class SettingsDialog extends LitElement {
 		this.remoteVersion = '';
 		this.updating = false;
 		this.updateErr = false;
+		this._providerOpen = false;
+		this._modelOpen = false;
 	}
 
 	connectedCallback() {
@@ -70,11 +74,47 @@ export class SettingsDialog extends LitElement {
 			if (typeof ud.sortBy === 'string') this.sortBy = ud.sortBy;
 			if (typeof ud.sortOrder === 'string') this.sortOrder = ud.sortOrder;
 		});
+
+		this._onGlobalPointerDown = (event) => {
+			if (!this._providerOpen && !this._modelOpen) return;
+
+			const path = event.composedPath();
+			const root = this.renderRoot;
+
+			const isInsideDropdown = path.some(
+				(node) =>
+					node instanceof HTMLElement &&
+					root.contains(node) &&
+					node.closest('.dropdown')
+			);
+
+			const isDropdownItem = path.some(
+				(node) =>
+					node instanceof HTMLElement &&
+					root.contains(node) &&
+					node.classList?.contains('dropdown-item')
+			);
+
+			// Close when:
+			// - click is outside dropdown, OR
+			// - click is on a dropdown item
+			if (!isInsideDropdown || isDropdownItem) {
+				this._providerOpen = false;
+				this._modelOpen = false;
+			}
+		};
+
+		// use "click" instead of "mousedown"
+		window.addEventListener('click', this._onGlobalPointerDown);
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		this._udUnsub?.();
+		if (this._onGlobalPointerDown) {
+			window.removeEventListener('mousedown', this._onGlobalPointerDown);
+			this._onGlobalPointerDown = null;
+		}
 	}
 
 	async firstUpdated() {
@@ -90,9 +130,13 @@ export class SettingsDialog extends LitElement {
 	updated(changed) {
 		if (changed.has('open') && this.open === false) {
 			this.stateView = 'default';
+			this._providerOpen = false;
+			this._modelOpen = false;
 		}
 		if (changed.has('stateView') && this.stateView === 'userData') {
 			this._updateKey = false;
+			this._providerOpen = false;
+			this._modelOpen = false;
 			this.refreshHasKey();
 		}
 	}
@@ -206,6 +250,69 @@ export class SettingsDialog extends LitElement {
 				justify-content: center;
 				line-height: 1;
 			}
+
+			.dropdown {
+				position: relative;
+				width: 220px;
+			}
+
+			.dropdown-toggle {
+				width: 100%;
+				padding: 8px 10px;
+				border: none;
+				border-radius: 6px;
+				font-size: 15px;
+				letter-spacing: 1px;
+				font-weight: 400;
+				box-sizing: border-box;
+				font-family: inherit;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				cursor: pointer;
+			}
+
+			.dropdown-menu {
+				position: absolute;
+				top: 100%;
+				left: 0;
+				right: 0;
+				padding: 0;
+				margin-top: 4px;
+				background: #fff;
+				border-radius: 6px;
+				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+				max-height: 220px;
+				overflow-y: auto;
+				z-index: 10;
+			}
+
+			.dropdown-item {
+				padding: 8px 10px;
+				cursor: pointer;
+				font-size: 14px;
+				list-style: none;
+				font-weight: 400;
+				letter-spacing: 1px;
+			}
+
+			.dropdown-item:hover {
+				background: rgba(0, 0, 0, 0.06);
+				border-radius: 4px;
+			}
+
+			.dropdown-item.selected {
+				font-weight: 400;
+			}
+
+			.dropdown-chevron {
+				margin-left: 8px;
+				font-size: 11px;
+			}
+			.dropdown-toggle.open {
+				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15),
+					inset 0 1px 1px rgba(255, 255, 255, 0.3);
+			}
 		`,
 	];
 
@@ -258,8 +365,12 @@ export class SettingsDialog extends LitElement {
 	async updateUserDataInputFields() {
 		const $ = (sel) => this.renderRoot?.querySelector(sel);
 
-		const provider = $('#provider')?.value ?? this.provider;
-		const model = $('#model')?.value ?? this.model;
+		this._providerOpen = false;
+		this._modelOpen = false;
+
+		const provider = this.provider;
+		const model = this.model;
+
 		const absPath = $('#absPath')?.value?.trim() ?? this.absPath;
 		const rawPath = $('#rawPath')?.value?.trim() ?? this.rawPath;
 
@@ -384,38 +495,109 @@ export class SettingsDialog extends LitElement {
 				`;
 
 			case 'userData':
-				const models = AI_STRUCTURED_MODELS[this.provider]?.models ?? [];
-				const selectedModel =
-					models.includes(this.model) && models.length
+				const providerEntries = Object.entries(AI_STRUCTURED_MODELS);
+				const modelsForProvider =
+					AI_STRUCTURED_MODELS[this.provider]?.models ?? [];
+				const currentProvider =
+					this.provider && AI_STRUCTURED_MODELS[this.provider]
+						? this.provider
+						: providerEntries[0]?.[0] ?? '';
+				const currentModel =
+					this.model && modelsForProvider.includes(this.model)
 						? this.model
-						: models[0] ?? '';
+						: modelsForProvider[0] ?? '';
 
 				return html`
 					<section class="settings">
 						<div class="settings-fields">
 							<label>
-								<select id="provider" .value=${this.provider}>
-									${Object.entries(AI_STRUCTURED_MODELS).map(
-										([providerKey, providerData]) => html`
-											<option value=${providerKey}>${providerData.key}</option>
-										`
-									)}
-								</select>
+								<div class="dropdown">
+									<button
+										type="button"
+										class="dropdown-toggle ${this._providerOpen ? 'open' : ''}"
+										@click=${() => {
+											this._providerOpen = !this._providerOpen;
+											if (this._providerOpen) this._modelOpen = false;
+										}}
+									>
+										<span>
+											${AI_STRUCTURED_MODELS[currentProvider]?.key ??
+											'Select provider'}
+										</span>
+										<span class="dropdown-chevron">▾</span>
+									</button>
+
+									${this._providerOpen
+										? html`
+												<ul class="dropdown-menu">
+													${providerEntries.map(
+														([providerKey, providerData]) => {
+															const selected = providerKey === currentProvider;
+															return html`
+																<li
+																	class="dropdown-item ${selected
+																		? 'selected'
+																		: ''}"
+																	@click=${(e) => {
+																		e.stopPropagation();
+																		this.provider = providerKey;
+																		const newModels =
+																			AI_STRUCTURED_MODELS[providerKey]
+																				?.models ?? [];
+																		if (!newModels.includes(this.model)) {
+																			this.model = newModels[0] ?? '';
+																		}
+																		this.refreshHasKey();
+																	}}
+																>
+																	${providerData.key}
+																</li>
+															`;
+														}
+													)}
+												</ul>
+										  `
+										: null}
+								</div>
 							</label>
 
 							<label>
-								<select id="model">
-									${models.map(
-										(model) => html`
-											<option
-												value=${model}
-												?selected=${model === selectedModel}
-											>
-												${model}
-											</option>
-										`
-									)}
-								</select>
+								<div class="dropdown">
+									<button
+										type="button"
+										class="dropdown-toggle ${this._modelOpen ? 'open' : ''}"
+										@click=${() => {
+											this._modelOpen = !this._modelOpen;
+											if (this._modelOpen) this._providerOpen = false;
+										}}
+									>
+										<span> ${currentModel || 'Select model'} </span>
+										<span class="dropdown-chevron">▾</span>
+									</button>
+
+									${this._modelOpen && modelsForProvider.length
+										? html`
+												<ul class="dropdown-menu">
+													${modelsForProvider.map((model) => {
+														const selected = model === currentModel;
+														return html`
+															<li
+																class="dropdown-item ${selected
+																	? 'selected'
+																	: ''}"
+																@click=${(e) => {
+																	e.stopPropagation();
+																	this.model = model;
+																}}
+															>
+																${model}
+															</li>
+														`;
+													})}
+												</ul>
+										  `
+										: null}
+								</div>
 							</label>
 
 							<label>
@@ -425,6 +607,8 @@ export class SettingsDialog extends LitElement {
 									placeholder=${this.hasKey ? '••••••••' : 'API key'}
 									autocomplete="off"
 									@focus=${(e) => {
+										this._providerOpen = false;
+										this._modelOpen = false;
 										this._updateKey = true;
 										if (this.hasKey) {
 											e.target.value = '';
@@ -440,6 +624,10 @@ export class SettingsDialog extends LitElement {
 									type="text"
 									.value=${this.absPath}
 									placeholder="eg: ~/Desktop/intrinsic"
+									@focus=${() => {
+										this._providerOpen = false;
+										this._modelOpen = false;
+									}}
 								/>
 							</label>
 
@@ -449,11 +637,21 @@ export class SettingsDialog extends LitElement {
 									type="text"
 									.value=${this.rawPath}
 									placeholder="(raw) eg: ~/Desktop/raw"
+									@focus=${() => {
+										this._providerOpen = false;
+										this._modelOpen = false;
+									}}
 								/>
 							</label>
 						</div>
 						<div class="horizontal-box">
-							<button @click=${() => (this.stateView = 'default')}>
+							<button
+								@click=${() => {
+									this._providerOpen = false;
+									this._modelOpen = false;
+									this.stateView = 'default';
+								}}
+							>
 								${IconX}
 							</button>
 							<button @click=${this.updateUserDataInputFields}>

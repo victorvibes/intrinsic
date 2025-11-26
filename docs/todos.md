@@ -18,8 +18,7 @@
 - Monte Carlo simulation with >=5 periods.
 - Support ETFs, Index Funds. If ticker starts with 'FUND.{ISIN}' -> fetch KID ->
   return basic info.
-- Add LLM options (Claude, Cloudflare, AWS Bedrock, Google AI, Groq, Deepseek,
-  Qwen...)
+- Add LLM options (Anthropic, Google, Cloudflare, AWS, Groq, Deepseek, Qwen...)
 - Local LLMs options: embed fine-tuned small LLM, llama-cpp, Ollama...
 - Local NER fine-tuning:
   - [Chunks classifier](./ner/ner-roadmap-1.md): extracts targeted chunks within
