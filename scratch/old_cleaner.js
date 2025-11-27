@@ -454,7 +454,7 @@ export function cleanChunk(target, chunk, period) {
 	processedText = '';
 	const linesToKeep = [];
 
-	const specialKeywords = ['miles', 'millones', 'thousands', 'millions'];
+	const specialKeywords = ['thousands', 'millions'];
 	const containsSpecialKeywords = (line) => {
 		const lowerLine = line.toLowerCase();
 		return specialKeywords.some((keyword) => lowerLine.includes(keyword));

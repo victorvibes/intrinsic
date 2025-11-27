@@ -3,7 +3,7 @@ import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.min.mjs?worker';
 
 let pdfJsInitialized = false;
 
-// leave on renderer. future pdf display?
+// leave on renderer. potential future pdf display?
 const setupPdfJs = () => {
 	if (pdfJsInitialized) return;
 	pdfjsLib.GlobalWorkerOptions.workerPort = new pdfjsWorker();

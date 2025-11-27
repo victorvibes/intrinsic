@@ -7,7 +7,7 @@ import {
 	incomeIndicators,
 	cashFlowIndicators,
 } from './chunker-consts.js';
-import { runWorker } from '../../workers/run.js';
+import { runWorker } from '../../../workers/run.js';
 
 export class Chunker {
 	constructor() {

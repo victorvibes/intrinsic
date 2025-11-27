@@ -1,7 +1,7 @@
-import { extractPDFText } from './preprocessor/parse-pdf.js';
-import { processHTMLText } from './preprocessor/parse-html.js';
-import { Chunker } from './preprocessor/chunker.js';
-import { chunksCleaner } from './preprocessor/cleaner.js';
+import { extractPDFText } from './preprocessor/parsers/parse-pdf.js';
+import { processHTMLText } from './preprocessor/parsers/parse-html.js';
+import { Chunker } from './preprocessor/chunker/chunker.js';
+import { chunksCleaner } from './preprocessor/cleaner/cleaner.js';
 import { postprocessor } from './postprocessor/postprocessor.js';
 
 async function fetchWithRetry(url) {

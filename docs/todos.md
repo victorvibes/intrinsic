@@ -6,7 +6,7 @@
   signing and quarantine.
 - Allow different score formulas.
 - Support insurance companies and financial institutions.
-- Performance and memory optimizations (renderer and backend).
+- Performance and memory optimizations accross the application.
 - Keyboard navigation.
 - Charts and sankey visualization.
 - Note-taking within ticker view.

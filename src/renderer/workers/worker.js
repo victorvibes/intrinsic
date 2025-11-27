@@ -1,9 +1,9 @@
-import { cleanChunk } from '../pipeline/preprocessor/cleaner.js';
-import { Chunker } from '../pipeline/preprocessor/chunker.js';
+import { cleanChunk } from '../pipeline/preprocessor/cleaner/cleaner.js';
+import { Chunker } from '../pipeline/preprocessor/chunker/chunker.js';
 import { DOMParser, parseHTML } from 'linkedom';
 globalThis.DOMParser = DOMParser;
 globalThis.Node = parseHTML('<!doctype html><html></html>').window.Node;
-import { processHTMLTextCore } from '../pipeline/preprocessor/parse-html.core.js';
+import { processHTMLTextCore } from '../pipeline/preprocessor/parsers/parse-html.core.js';
 
 const chunker = new Chunker();
 

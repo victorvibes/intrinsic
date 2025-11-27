@@ -1,4 +1,4 @@
-import { runWorker } from '../../workers/run.js';
+import { runWorker } from '../../../workers/run.js';
 
 // don’t need async/await but more explicit -> returns promise
 export async function processHTMLText(text, startPage, endPage) {
