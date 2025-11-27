@@ -228,6 +228,20 @@ Weights:
 
 </details>
 
+### Update
+
+This app doesn’t have a traditional signed auto-updater. Instead, it includes a
+simple updater that clones repo from GitHub and rebuilds the app using git +
+npm.
+
+The update approach is intentionally minimal: clone -> install dependencies ->
+rebuild. The goal was to keep everything open-source, transparent, and fully
+GitHub-native rather than relying on complex external tooling, signing, or
+packaged update infrastructure.
+
+If you prefer not to use that updater, you can always build from source manually
+or wait for packaged releases.
+
 ### Common Errors
 
 Please take a moment to review [docs/common-errors.md](docs/common-errors.md)
