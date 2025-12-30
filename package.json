@@ -1,0 +1,35 @@
+{
+	"name": "intrinsic",
+	"productName": "intrinsic",
+	"version": "1.5.4",
+	"main": "src/main/main.js",
+	"bin": {
+		"intrinsic": "scripts/cli.js"
+	},
+	"scripts": {
+		"postinstall": "electron-rebuild -f -w better-sqlite3",
+		"dev": "concurrently -k \"cross-env NODE_ENV=development vite\" \"cross-env NODE_ENV=development electron .\"",
+		"dev:prod": "vite build && cross-env NODE_ENV=production ELECTRON_DEVTOOLS=1 electron .",
+		"build": "node scripts/pack.js"
+	},
+	"type": "module",
+	"author": "github.com/victorvibes",
+	"license": "MIT",
+	"dependencies": {
+		"better-sqlite3": "^12.2.0",
+		"linkedom": "^0.18.12",
+		"lit": "^3.3.1",
+		"openai": "^5.15.0",
+		"pdfjs-dist": "^5.4.54"
+	},
+	"devDependencies": {
+		"@electron/packager": "^19.0.1",
+		"@electron/rebuild": "^4.0.1",
+		"concurrently": "^9.2.0",
+		"cross-env": "^10.0.0",
+		"electron": "^37.3.0",
+		"png2icons": "^2.0.1",
+		"sharp": "^0.34.4",
+		"vite": "^7.1.3"
+	}
+}
