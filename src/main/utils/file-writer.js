@@ -3,11 +3,11 @@ import path from 'path';
 import { getUserData } from './user-data.js';
 
 /**
-    Writes content to a specified file within userDataured directories.
+    Writes content to a specified file within userData directories.
     Creates directories if they do not exist.
 
     Saves different pipeline steps in orderly manner for later review or debugging.
-    Helps us see what worked and what didn't (specially the cleaner) and refine accordingly.
+    Helps see what worked and what didn't (specially the cleaner) and refine accordingly.
  */
 export async function fileWriter(filename, content, isRaw = false) {
 	const userData = getUserData(); // read from userData

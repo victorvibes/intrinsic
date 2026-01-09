@@ -84,7 +84,7 @@ function installWindows() {
 	}
 	const packagedDir = path.join(dist, d); // contains Intrinsic.exe etc.
 
-	// User-scope install location (no admin): %LOCALAPPDATA%\Programs\Intrinsic
+	// user-scope install location (no admin): %LOCALAPPDATA%\Programs\Intrinsic
 	const programsDir = path.join(
 		process.env.LOCALAPPDATA || path.join(os.homedir(), 'AppData', 'Local'),
 		'Programs',
@@ -94,7 +94,7 @@ function installWindows() {
 	cpDir(packagedDir, programsDir);
 	console.log(`✅ Installed to: ${programsDir}`);
 
-	// Create Start Menu shortcut: %AppData%\Microsoft\Windows\Start Menu\Programs\Intrinsic.lnk
+	// create Start Menu shortcut: %AppData%\Microsoft\Windows\Start Menu\Programs\Intrinsic.lnk
 	const startMenuDir = path.join(
 		process.env.APPDATA || path.join(os.homedir(), 'AppData', 'Roaming'),
 		'Microsoft',
@@ -143,7 +143,7 @@ function installLinux() {
 	cpDir(packagedDir, installDir);
 	console.log(`✅ Installed to: ${installDir}`);
 
-	// Icon -> user icon theme
+	// icon -> user icon theme
 	let iconRef = 'utilities-terminal';
 	const icon512 = path.join(root, 'assets', 'icon-512.png');
 	const iconSrc = fs.existsSync(icon512)
@@ -183,7 +183,7 @@ Terminal=false
 Categories=Utility;Productivity;
 `;
 	fs.writeFileSync(desktopFile, contents, { mode: 0o644 });
-	// Best-effort cache refresh
+	// best-effort cache refresh
 	try {
 		spawnSync('update-desktop-database');
 	} catch {}

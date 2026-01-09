@@ -30,7 +30,7 @@ const __dirname = path.dirname(__filename);
 
 app.setName('Intrinsic');
 
-// Single-instance lock
+// single-instance lock
 const gotLock = app.requestSingleInstanceLock();
 if (!gotLock) {
 	app.quit();
@@ -107,12 +107,12 @@ app.on('second-instance', () => {
 	}
 });
 
-// ---- Lifecycle ----
+// ---- lifecycle ----
 app.whenReady().then(async () => {
 	// ---- userData ----
 	initUserData();
 	const prefs = loadUserData({
-		// defaults on first run:
+		// defaults:
 		lang: 'EN',
 		accent: 'rgba(255, 255, 255, 0.3)',
 		ttm: true,
@@ -128,7 +128,7 @@ app.whenReady().then(async () => {
 		console.log('userData loaded:', prefs);
 	}
 
-	// ---- DB init ----
+	// ---- db ----
 	try {
 		const dbDir = path.join(app.getPath('userData'), 'sqlite');
 		const dbName = 'intrinsic.sqlite';
@@ -279,7 +279,7 @@ app.whenReady().then(async () => {
 		try {
 			await updateVersion(); // throws on failure
 
-			// Give file ops a brief moment to flush, then quit
+			// give file ops moment to flush, then quit
 			setTimeout(() => {
 				try {
 					app.quit();

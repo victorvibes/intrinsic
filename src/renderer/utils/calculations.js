@@ -1,6 +1,5 @@
 import { html } from 'lit';
 
-// ------- helpers -------
 function safeDivide(numerator, denominator) {
 	if (
 		numerator === 0 ||
@@ -49,8 +48,6 @@ export const editableFields = [
 	'cash_flow_from_financing',
 ];
 
-// -----------------------
-
 export function getDerivedFields(data) {
 	if (!data) return null;
 
@@ -70,7 +67,7 @@ export function getDerivedFields(data) {
 		data.current_liabilities
 	);
 
-	// Adjusting to 2 decimal places without rounding
+	// 2 decimal places without rounding
 	const adjustToTwoDecimals = (value) => {
 		if (value === null || value === undefined) return null;
 		return Math.round(value * 1000) / 1000;
@@ -358,7 +355,7 @@ export function incomeForWishedPER(
 	let percentChange = null;
 	if (netIncomeNumber) {
 		if (netIncomeNumber < 0 && requiredNetIncome > 0) {
-			// Turnaround scenario: measure the swing vs the positive target, not the loss magnitude
+			// turnaround scenario: measure the swing vs the positive target, not the loss magnitude
 			percentChange =
 				Math.round(
 					((requiredNetIncome - netIncomeNumber) / requiredNetIncome) * 1000

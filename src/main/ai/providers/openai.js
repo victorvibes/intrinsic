@@ -8,7 +8,7 @@ export async function initOpenAIClient() {
 	const c = new OpenAI({ apiKey: key.trim() });
 
 	try {
-		// Ping once to verify key validity
+		// ping to verify
 		await c.models.list({ limit: 1 });
 		return c;
 	} catch (err) {

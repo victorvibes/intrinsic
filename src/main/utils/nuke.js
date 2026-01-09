@@ -22,7 +22,7 @@ function safeRmDir(target) {
 	}
 }
 
-// Nukes all per-user app data, resets in-memory clients -> relaunches.
+// nukes all per-user app data, resets in-memory clients -> relaunches.
 export function nuke({ db, closeDb, resetAI } = {}) {
 	// db
 	try {

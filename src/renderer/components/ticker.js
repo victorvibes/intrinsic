@@ -128,9 +128,9 @@ export class Ticker extends LitElement {
 			}
 
 			.boxes-layout {
-				/* Prevent columns from overgrowing the viewport */
+				/* prevent columns from overgrowing viewport */
 				width: min(100%, 85vw);
-				/* Add sensible cap so each column */
+				/* sensible cap each column */
 				max-width: 1000px;
 				margin: 0 auto;
 
@@ -201,7 +201,7 @@ export class Ticker extends LitElement {
 				overflow: hidden;
 				text-overflow: ellipsis;
 				white-space: nowrap;
-				/* font-size: 13px; // slightly smaller for labels */
+				/* font-size: 13px; */
 			}
 
 			/* right-side cell: [ change ][ value ] */
@@ -217,7 +217,7 @@ export class Ticker extends LitElement {
 
 			/* change: fixed slot, right-aligned */
 			.row p:last-child sub.change {
-				flex: 0 0 12ch; /* fixed 12ch width to prevent layout shift */
+				flex: 0 0 12ch; /* fixed width to prevent layout shift */
 				min-width: 12ch;
 				max-width: 12ch;
 				text-align: right;
@@ -993,13 +993,13 @@ export class Ticker extends LitElement {
 			</div>
 
 			<div class="boxes-layout">
-				<!-- Left side -->
+				<!-- left side -->
 				<div class="left">
 					${this.renderBox(sections[0], derived)}
 					${this.renderBox(sections[1], derived)}
 				</div>
 
-				<!-- Right side -->
+				<!-- right side -->
 				<div class="right">
 					<div class="box input-box">
 						<div class="row row-left-aligned">

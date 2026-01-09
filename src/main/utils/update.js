@@ -12,7 +12,7 @@ function run(cmd, args, cwd) {
 	return new Promise((resolve, reject) => {
 		const exe = process.platform === 'win32' && cmd === 'npm' ? 'npm.cmd' : cmd;
 
-		// Patch PATH so npm/git work from packaged apps
+		// patch PATH so npm/git work from packaged apps
 		const env = { ...process.env };
 		if (process.platform === 'darwin' || process.platform === 'linux') {
 			const nodeDir = path.dirname(process.execPath);

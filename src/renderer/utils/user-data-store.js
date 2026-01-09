@@ -1,7 +1,6 @@
 const subscribers = new Set();
 
 // in-memory global reactive store for userData
-
 // renderer defaults
 let state = {
 	lang: 'EN',

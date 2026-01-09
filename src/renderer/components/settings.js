@@ -6,7 +6,6 @@ import {
 	IconX,
 	IconCheck,
 	IconSliders,
-	IconSpinner,
 } from './styles/icons.js';
 import './lit-components/dialog.js';
 import { userDataStore } from '../utils/user-data-store.js';
@@ -95,8 +94,8 @@ export class SettingsDialog extends LitElement {
 					node.classList?.contains('dropdown-item')
 			);
 
-			// Close when:
-			// - click is outside dropdown, OR
+			// close when:
+			// - click is outside dropdown
 			// - click is on a dropdown item
 			if (!isInsideDropdown || isDropdownItem) {
 				this._providerOpen = false;
@@ -104,7 +103,6 @@ export class SettingsDialog extends LitElement {
 			}
 		};
 
-		// use "click" instead of "mousedown"
 		window.addEventListener('click', this._onGlobalPointerDown);
 	}
 
@@ -112,7 +110,7 @@ export class SettingsDialog extends LitElement {
 		super.disconnectedCallback();
 		this._udUnsub?.();
 		if (this._onGlobalPointerDown) {
-			window.removeEventListener('mousedown', this._onGlobalPointerDown);
+			window.removeEventListener('click', this._onGlobalPointerDown);
 			this._onGlobalPointerDown = null;
 		}
 	}
@@ -129,6 +127,11 @@ export class SettingsDialog extends LitElement {
 
 	updated(changed) {
 		if (changed.has('open') && this.open === false) {
+			const persisted = userDataStore.get().model;
+			if (typeof persisted === 'string') {
+				this.model = persisted;
+			}
+
 			this.stateView = 'default';
 			this._providerOpen = false;
 			this._modelOpen = false;
@@ -356,7 +359,7 @@ export class SettingsDialog extends LitElement {
 		return 0;
 	}
 
-	// Convenience getter:
+	// convenience getter:
 	get _updateAvailable() {
 		if (!this.remoteVersion) return false; // no info -> don’t nag
 		return this._compareSemver(this.localVersion, this.remoteVersion) < 0;
@@ -381,7 +384,7 @@ export class SettingsDialog extends LitElement {
 		try {
 			// only touch secret if field was interacted with
 			if (this._updateKey) {
-				// Empty string = user cleared field -> delete key
+				// empty string = user cleared field -> delete key
 				await window.api.secrets.set(keyName, apiKey);
 			}
 
@@ -423,7 +426,7 @@ export class SettingsDialog extends LitElement {
 		);
 
 		try {
-			// Race backend call with timeout
+			// race backend call with timeout
 			const result = await Promise.race([
 				window.api.app.updateVersion(), // returns { ok, error? }
 				timeout,
@@ -431,7 +434,7 @@ export class SettingsDialog extends LitElement {
 
 			if (!result?.ok) throw new Error(result?.error || 'Update failed');
 
-			// If ok === true, backend quits + relaunches, so UI doesn’t matter
+			// ok === true -> backend quits + relaunches, so UI doesn’t matter
 		} catch (e) {
 			this.updating = false;
 			this.updateErr = true;

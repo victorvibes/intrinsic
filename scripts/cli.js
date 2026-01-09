@@ -14,7 +14,7 @@ function exists(p) {
 	}
 }
 
-// Prefer the installed app per OS
+// prefer installed app per OS
 function findInstalledBinary() {
 	if (process.platform === 'darwin') {
 		const sys = '/Applications/Intrinsic.app/Contents/MacOS/Intrinsic';

@@ -7,7 +7,7 @@ export async function processHTMLText(text, startPage, endPage) {
 	if (isMime(text)) {
 		const htmlContent = extractHtml(text);
 
-		// unload parsing to worker. Returns promise
+		// unload parsing to worker -> returns promise
 		return await runWorker('processHTMLTextCore', [
 			htmlContent,
 			startPage,

@@ -14,7 +14,7 @@ function expandAndNormalizeDir(p) {
 
 	let out = p.trim();
 
-	// Expand leading ~
+	// expand leading ~
 	if (out.startsWith('~') && (out.length === 1 || /[\\/]/.test(out[1]))) {
 		out = path.join(os.homedir(), out.slice(1));
 	}
@@ -23,10 +23,10 @@ function expandAndNormalizeDir(p) {
 		.replace(/%([^%]+)%/g, (_, n) => process.env[n] || '')
 		.replace(/\$([A-Za-z_]\w*)/g, (_, n) => process.env[n] || '');
 
-	// Normalize & absolutize
+	// normalize & absolutize
 	out = path.resolve(out);
 
-	// No trailing separator (not needed with path.join)
+	// no trailing separator (not needed with path.join)
 	if (out.endsWith(path.sep)) out = out.slice(0, -path.sep.length);
 
 	return out;
@@ -87,12 +87,12 @@ export function loadUserData(defaults = {}) {
 		} catch {}
 	}
 
-	// Normalize once after load
+	// normalize once after load
 	STATE = normalizeFilewriterFields(STATE);
 	return STATE;
 }
 
-// Atomic save (tmp -> rename) and serialized
+// atomic save (tmp -> rename) and serialized
 export async function saveUserData() {
 	if (!FILE_PATH) throw new Error('initUserData() must be called first.');
 	ensureDir(FILE_PATH);

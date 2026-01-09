@@ -26,3 +26,4 @@
   - [Data extractor](./ner/ner-roadmap-2.md): extract financial data from each
     section from chunk classifier.
 - Integrate Alpha Vantage API or ticker price scraper for live-pricing.
+- Add macro section.

@@ -1,7 +1,7 @@
 import { contextBridge, ipcRenderer, clipboard } from 'electron';
 
 contextBridge.exposeInMainWorld('api', {
-	// DB
+	// db
 	getTickersCount: () => ipcRenderer.invoke('db:getTickersCount'),
 	getTickers: (page, pageSize) =>
 		ipcRenderer.invoke('db:getTickers', { page, pageSize }),
@@ -13,7 +13,7 @@ contextBridge.exposeInMainWorld('api', {
 		ipcRenderer.invoke('db:addFinances', { ticker, period, postprocessed }),
 	getDbPath: () => ipcRenderer.invoke('db:getPath'),
 
-	// App
+	// app
 	app: {
 		shutdown: () => ipcRenderer.send('app:shutdown'),
 		getVersion: () => ipcRenderer.invoke('app:getVersion'),
@@ -21,29 +21,29 @@ contextBridge.exposeInMainWorld('api', {
 		nuke: () => ipcRenderer.send('app:nuke'),
 	},
 
-	// File System
+	// fs
 	selectFile: () => ipcRenderer.invoke('dialog:openFile'),
 	fileWriter: (filename, content, isRaw) =>
 		ipcRenderer.invoke('fileWriter', filename, content, isRaw),
 	readFileBuffer: (filePath) => ipcRenderer.invoke('readFileBuffer', filePath),
 
-	// AI
+	// ai
 	runAI: (cleanedChunks, hits, minHits, period) =>
 		ipcRenderer.invoke('ai:run', cleanedChunks, hits, minHits, period),
 
-	// User Data
+	// user data
 	userData: {
 		get: () => ipcRenderer.invoke('userData:get'),
 		update: (partial) => ipcRenderer.invoke('userData:update', partial),
 	},
 
-	// Secrets
+	// secrets
 	secrets: {
 		has: (name) => ipcRenderer.invoke('secrets:has', name),
 		set: (name, value) => ipcRenderer.invoke('secrets:set', { name, value }),
 	},
 
-	// Various
+	// various
 	copyToClipboard: (text) => {
 		clipboard.writeText(text);
 		return true;
