@@ -32,7 +32,7 @@ export function cleanChunk(target, chunk, period) {
 			continue;
 		}
 
-		// Pattern to detect: two numbers followed by a word
+		// Pattern to detect: 2 numbers followed by a word
 		// This matches:
 		// - A number (with optional decimal points, commas, parentheses, minus signs)
 		// - Whitespace (any amount)
