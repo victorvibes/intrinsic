@@ -13,7 +13,9 @@
 - RAG chat within ticker view (JSON data).
 - RAG chat with doc / parsed text.
 - Parse CSR URLs.
-- Mark/unmark tickers currently on portfolio -> filter/search through dialog.
+- Mark/unmark tickers currently on portfolio
+- Filter/search through dialog.
+- Track upcoming results.
 - Web-search for portfolio tickers latest news.
 - Monte Carlo simulation with >=5 periods.
 - Support ETFs, Index Funds. If ticker starts with 'FUND.{ISIN}' -> fetch KID ->
@@ -25,5 +27,5 @@
     report (balance, income, cash flow).
   - [Data extractor](./ner/ner-roadmap-2.md): extract financial data from each
     section from chunk classifier.
-- Integrate Alpha Vantage API or ticker price scraper for live-pricing.
+- Live-pricing: Alpha Vantage API or ticker price scraper.
 - Add macro section.
