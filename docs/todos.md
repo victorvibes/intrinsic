@@ -22,10 +22,6 @@
   return basic info.
 - Add LLM options (Anthropic, Google, Cloudflare, AWS, Groq, Deepseek, Qwen...)
 - Local LLMs options: embed fine-tuned small LLM, llama-cpp, Ollama...
-- Local NER fine-tuning:
-  - [Chunks classifier](./ner/ner-roadmap-1.md): extracts targeted chunks within
-    report (balance, income, cash flow).
-  - [Data extractor](./ner/ner-roadmap-2.md): extract financial data from each
-    section from chunk classifier.
+- Local deberta-v3-small.
 - Live-pricing: Alpha Vantage API or ticker price scraper.
 - Add macro section.
